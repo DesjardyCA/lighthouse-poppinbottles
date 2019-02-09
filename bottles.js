@@ -20,9 +20,7 @@ doTheStuff();
 
 // runs through the calcs and writes to log the expected out
 function doTheStuff() {
-  fullBottles.total += moneyStuff();
-  fullBottles.total += bottleCalc();
-  fullBottles.total += capCalc();
+  moneyStuff();
 
   console.log(`Total bottles: ${fullBottles.total}\n` +
     `Remaining bottles: ${emptyBottles}\n` +
@@ -39,8 +37,12 @@ function moneyStuff() {
   money -= bottlesTemp * price;
   emptyBottles += bottlesTemp;
   caps += bottlesTemp;
+  fullBottles.total += bottlesTemp;
 
-  return bottlesTemp;
+  while (emptyBottles >= emptyToFull || caps >= capsToFull) {
+    fullBottles.total += bottleCalc();
+    fullBottles.total += capCalc();
+  }
 }
 
 // returns how many full bottles user gets from their empties
