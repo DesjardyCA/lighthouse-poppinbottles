@@ -8,13 +8,9 @@ const emptyToFull = 2;
 const capsToFull = 4;
 
 var money = process.argv[2];
-var fullBottles = {
-  total: 0,
-  fromEmpties: 0,
-  fromCaps: 0
-};
-var emptyBottles = 0;
-var caps = 0;
+var fullBottles = 0;
+var emptyBottles = [0, 0];
+var caps = [0, 0];
 
 doTheStuff();
 
@@ -30,26 +26,32 @@ function doTheStuff() {
     `  Caps: ${fullBottles.fromCaps}`);
 }
 
-// returns how many full bottles user gets
-function moneyStuff() {}
+function moneyStuff() {
+  let bottlesTemp = (Math.trunc(money / price));
+
+  money -= bottlesTemp * price;
+  groundhogDay(bottlesTemp);
+}
+
+// recursive function
+function groundhogDay(bottlesTemp) {
+  fullBottles += bottlesTemp;
+  emptyBottles += bottlesTemp;
+  caps += bottlesTemp;
+
+  if (emptyBottles >= emptyToFull) {
+    groundhogDay(emptyBottleCalc());
+  }
+  if (caps >= capsToFull) {
+    groudhogDay(capCalc());
+  }
+}
 
 // returns how many full bottles user gets from their empties
-function bottleCalc() {
-  let bottlesTemp = Math.trunc(emptyBottles / emptyToFull);
-  emptyBottles -= bottlesTemp * emptyToFull;
-
-  fullBottles.fromEmpties = bottlesTemp;
-  return bottlesTemp;
-}
+function emptyBottleCalc() {}
 
 // returns how many full bottles user gets from their caps
-function capCalc() {
-  let capsTemp = Math.trunc(caps / capsToFull);
-  caps -= capsTemp * capsToFull;
-
-  fullBottles.fromCaps = capsTemp;
-  return capsTemp;
-}
+function capCalc() {}
 
 // *** Sample output ***
 // Total bottles: 75
