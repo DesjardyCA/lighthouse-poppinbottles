@@ -8,9 +8,9 @@ const emptyToFull = 2;
 const capsToFull = 4;
 
 var money = process.argv[2];
-var fullBottles = 0;
-var emptyBottles = [0, 0];
-var caps = [0, 0];
+var totalBottles = 0;
+var emptyBottles = 0;
+var caps = 0;
 
 doTheStuff();
 
@@ -18,12 +18,12 @@ doTheStuff();
 function doTheStuff() {
   moneyStuff();
 
-  console.log(`Total bottles: ${fullBottles.total}\n` +
+  console.log(`Total bottles: ${totalBottles}\n` +
     `Remaining bottles: ${emptyBottles}\n` +
     `Remaining caps: ${caps}\n` +
     `Total earned:\n` +
-    `  Bottles: ${fullBottles.fromEmpties}\n` +
-    `  Caps: ${fullBottles.fromCaps}`);
+    `  Bottles: ${Math.trunc(totalBottles/emptyToFull)}\n` +
+    `  Caps: ${Math.trunc(totalBottles/capsToFull)}`);
 }
 
 function moneyStuff() {
@@ -35,23 +35,40 @@ function moneyStuff() {
 
 // recursive function
 function groundhogDay(bottlesTemp) {
-  fullBottles += bottlesTemp;
+  var changed = false;
+  totalBottles += bottlesTemp;
   emptyBottles += bottlesTemp;
   caps += bottlesTemp;
 
+  let recursTemp = 0;
   if (emptyBottles >= emptyToFull) {
-    groundhogDay(emptyBottleCalc());
+    recursTemp += emptyBottleCalc();
+    changed = true;
   }
   if (caps >= capsToFull) {
-    groudhogDay(capCalc());
+    recursTemp += capCalc();
+    changed = true;
+  }
+  if (changed) {
+    groundhogDay(recursTemp);
   }
 }
 
 // returns how many full bottles user gets from their empties
-function emptyBottleCalc() {}
+function emptyBottleCalc() {
+  let bottlesTemp = Math.trunc(emptyBottles / emptyToFull);
+  emptyBottles -= bottlesTemp * emptyToFull;
+
+  return bottlesTemp;
+}
 
 // returns how many full bottles user gets from their caps
-function capCalc() {}
+function capCalc() {
+  let bottlesTemp = Math.trunc(caps / capsToFull);
+  caps -= bottlesTemp * capsToFull;
+
+  return bottlesTemp;
+}
 
 // *** Sample output ***
 // Total bottles: 75
