@@ -31,19 +31,7 @@ function doTheStuff() {
 }
 
 // returns how many full bottles user gets
-function moneyStuff() {
-  let bottlesTemp = (Math.trunc(money / price));
-
-  money -= bottlesTemp * price;
-  emptyBottles += bottlesTemp;
-  caps += bottlesTemp;
-  fullBottles.total += bottlesTemp;
-
-  while (emptyBottles >= emptyToFull || caps >= capsToFull) {
-    fullBottles.total += bottleCalc();
-    fullBottles.total += capCalc();
-  }
-}
+function moneyStuff() {}
 
 // returns how many full bottles user gets from their empties
 function bottleCalc() {
